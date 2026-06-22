@@ -1,1 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KinAlerte · Dashboard</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Notre style -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
 
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="logo-section">
+      <div class="logo">🚨</div>
+      <span class="logo-text">Kin<span>Alerte</span></span>
+      <span class="logo-badge">PRO</span>
+    </div>
+    <div class="header-counters">
+      <!-- SOS -->
+      <button class="counter-btn" data-filter="sos">
+        <span class="badge-dot sos"></span>
+        <span class="counter-icon sos">🆘</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-sos">0</span>
+          <span class="counter-label">SOS</span>
+          <span class="counter-trend up" id="trend-sos">↑ 12%</span>
+        </span>
+      </button>
+      <!-- Signalements (on utilisera une autre collection ou on garde en simulation) -->
+      <button class="counter-btn" data-filter="signalement">
+        <span class="badge-dot signalement"></span>
+        <span class="counter-icon signalement">⚠️</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-signalement">0</span>
+          <span class="counter-label">Signalements</span>
+          <span class="counter-trend up" id="trend-signalement">↑ 8%</span>
+        </span>
+      </button>
+      <!-- Navigations (courses en cours) -->
+      <button class="counter-btn" data-filter="navigation">
+        <span class="badge-dot navigation"></span>
+        <span class="counter-icon navigation">🧭</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-navigation">0</span>
+          <span class="counter-label">Courses</span>
+          <span class="counter-trend down" id="trend-navigation">↓ 3%</span>
+        </span>
+      </button>
+      <!-- Utilisateurs en ligne -->
+      <button class="counter-btn">
+        <span class="badge-dot user"></span>
+        <span class="counter-icon user">👤</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-users">0</span>
+          <span class="counter-label">En ligne</span>
+          <span class="counter-trend up" id="trend-users">↑ 5%</span>
+        </span>
+      </button>
+      <!-- Chauffeurs en ligne -->
+      <button class="counter-btn" style="border-color:var(--accent-warning);">
+        <span class="badge-dot traffic"></span>
+        <span class="counter-icon traffic">🚗</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-drivers">0</span>
+          <span class="counter-label">Chauffeurs</span>
+          <span class="counter-trend up" id="trend-drivers">↑ 2%</span>
+        </span>
+      </button>
+      <!-- Prédictions IA -->
+      <button class="counter-btn" style="border-color:var(--accent-violet);">
+        <span class="badge-dot ai"></span>
+        <span class="counter-icon ai">🧠</span>
+        <span class="counter-data">
+          <span class="counter-value" id="counter-ai">0</span>
+          <span class="counter-label">Prédictions</span>
+          <span class="counter-trend up" style="color:var(--accent-violet);">↑ 15%</span>
+        </span>
+      </button>
+    </div>
+    <div class="header-right">
+      <span class="clock" id="clock">00:00:00</span>
+      <div class="operator-info">
+        <span class="operator-avatar">OP</span>
+        <span class="operator-name" id="operator-name">Opérateur</span>
+        <span class="operator-status"></span>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+        <button class="header-btn" id="export-btn"><i class="fas fa-download"></i></button>
+        <button class="header-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+        <button class="header-btn" id="notification-btn"><i class="fas fa-bell"></i><span class="badge" id="notification-badge">0</span></button>
+        <button class="header-btn" id="settings-btn"><i class="fas fa-cog"></i></button>
+        <button class="header-btn danger" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ===== SIDEBAR LEFT ===== -->
+    <aside class="sidebar-left" id="sidebar-left">
+      <div class="tabs">
+        <button class="tab active" data-tab="sos">SOS <span class="tab-badge sos" id="badge-sos">0</span></button>
+        <button class="tab" data-tab="signalement">Signalements <span class="tab-badge signalement" id="badge-signalement">0</span></button>
+        <button class="tab" data-tab="navigation">Courses <span class="tab-badge navigation" id="badge-navigation">0</span></button>
+        <button class="tab" data-tab="messages">Messages <span class="tab-badge message" id="badge-messages">0</span></button>
+        <button class="tab" data-tab="ai">IA <span class="tab-badge ai" id="badge-ai">0</span></button>
+        <button class="tab" data-tab="settings">⚙️ <span class="tab-badge settings">Paramètres</span></button>
+      </div>
+
+      <div class="search-container" id="search-container">
+        <span class="search-icon"><i class="fas fa-search"></i></span>
+        <input type="search" class="search-input" id="search-input" placeholder="Rechercher..." />
+      </div>
+
+      <div class="filters-container hidden" id="filters-container">
+        <button class="filter-chip" data-filter="Accident"><span class="chip-icon">🚗</span>Accident</button>
+        <button class="filter-chip" data-filter="Sécurité"><span class="chip-icon">🛡️</span>Sécurité</button>
+        <button class="filter-chip" data-filter="Inondation"><span class="chip-icon">🌊</span>Inondation</button>
+        <button class="filter-chip" data-filter="Trafic"><span class="chip-icon">🚦</span>Trafic</button>
+        <button class="filter-chip" data-filter="Incendie"><span class="chip-icon">🔥</span>Incendie</button>
+      </div>
+
+      <div class="filters-container" id="status-filters">
+        <button class="filter-chip status-chip active" data-status="all">Tous</button>
+        <button class="filter-chip status-chip" data-status="urgent" style="border-color:var(--accent-sos);color:var(--accent-sos);">Urgent</button>
+        <button class="filter-chip status-chip" data-status="traitement" style="border-color:var(--accent-navigation);color:var(--accent-navigation);">En cours</button>
+        <button class="filter-chip status-chip" data-status="resolu" style="border-color:var(--accent-success);color:var(--accent-success);">Résolu</button>
+        <button class="filter-chip status-chip" data-status="en-attente" style="border-color:var(--accent-warning);color:var(--accent-warning);">En attente</button>
+      </div>
+
+      <!-- AI Prediction Panel -->
+      <div class="ai-prediction" id="ai-prediction">
+        <span class="ai-icon">🧠</span>
+        <span class="ai-text">Prédiction: Zone à risque détectée à Gombe</span>
+        <span class="ai-score">78%</span>
+      </div>
+
+      <div class="list-container" id="list-container">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <span>Chargement...</span>
+        </div>
+      </div>
+
+      <div class="settings-panel" id="settings-panel">
+        <!-- Contenu paramètres (identique à version précédente) -->
+      </div>
+    </aside>
+
+    <!-- ===== MAP CENTER ===== -->
+    <section class="map-container">
+      <div id="map"></div>
+      <!-- Map toolbar (identique) -->
+      <div class="map-toolbar">
+        <div class="map-toolbar-group">
+          <button class="map-filter-btn active" data-map-filter="sos"><i class="fas fa-exclamation-triangle"></i> SOS</button>
+          <button class="map-filter-btn active" data-map-filter="signalement"><i class="fas fa-flag"></i> Signalements</button>
+          <button class="map-filter-btn active" data-map-filter="navigation"><i class="fas fa-location-dot"></i> Courses</button>
+        </div>
+        <div class="map-toolbar-group">
+          <button class="map-filter-btn" data-map-filter="risk" id="risk-toggle"><i class="fas fa-shield-halved"></i> Risques</button>
+          <button class="map-filter-btn" data-map-filter="traffic" id="traffic-toggle"><i class="fas fa-car"></i> Trafic</button>
+          <button class="map-filter-btn" data-map-filter="heat" id="heat-toggle"><i class="fas fa-fire"></i> Heatmap</button>
+          <button class="map-filter-btn" data-map-filter="ai" id="ai-toggle"><i class="fas fa-brain"></i> IA</button>
+        </div>
+      </div>
+      <div class="map-search-container" id="map-search-container">
+        <span class="map-search-icon"><i class="fas fa-search"></i></span>
+        <input type="text" class="map-search-input" id="map-search" placeholder="Chercher..." autocomplete="off" />
+        <div class="suggestions-box" id="suggestions-box"></div>
+      </div>
+      <div class="map-legend">...</div>
+      <div class="map-scale">5 km</div>
+    </section>
+
+    <!-- ===== SIDEBAR RIGHT ===== -->
+    <aside class="sidebar-right">
+      <!-- Statistiques (identique) -->
+    </aside>
+  </main>
+
+  <!-- ===== DRAWER ===== -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer" role="dialog">
+    <div class="drawer-header">
+      <div class="drawer-title" id="drawer-title">Détails</div>
+      <button class="drawer-close" id="drawer-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="drawer-content" id="drawer-content"></div>
+  </aside>
+
+  <!-- ===== TOASTS ===== -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/dataService.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
