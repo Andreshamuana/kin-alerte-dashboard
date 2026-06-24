@@ -1,22 +1,24 @@
-# kin-alerte-dashboard
-Tableau de bord d'administration de Kin Alerte
 # KinAlerte Dashboard
 
-Tableau de bord de supervision en temps réel pour l'application KinAlerte (alerte proches, chauffeurs, courses).
+Tableau de bord de supervision pour l'application KinAlerte.
 
 ## 🔧 Configuration
 
-1. Renseignez vos clés Firebase dans `js/config.js`.
-2. Ouvrez `index.html` ou déployez sur GitHub Pages.
+1. Renommer `js/config.js` avec vos clés Firebase (déjà fait).
+2. Ouvrir `index.html` avec Live Server.
 
-## 📊 Données
+## 📊 Données Firestore
 
-- Alertes SOS : `emergency_alerts` (status = 'active')
-- Courses : `rides` (status = 'in_progress' ou 'driver_arriving')
-- Utilisateurs : `users` (isOnline = true)
-- Chauffeurs : `driver_locations` (is_online = true)
-- Notifications : `notifications` (limitée aux 20 derniers)
+- `emergency_alerts` : alertes SOS actives
+- `rides` : courses en cours
+- `signalements` : signalements utilisateur
+- `Notifications` : messages récents
+- `users_live_location` : position des chauffeurs
 
-## 🔥 Mode simulation
+## 🔒 Règles de sécurité
 
-Si Firebase n'est pas configuré, passez `dataMode: 'simulation'` dans `config.js`.
+Voir les règles Firestore dans la console Firebase.
+
+## 🚀 Déploiement
+
+GitHub Pages ou Netlify.
