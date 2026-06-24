@@ -1,16 +1,14 @@
-
 // js/config.js
 const CONFIG = {
-  // 🔥 Remplacez ces valeurs par les vôtres
   firebase: {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_PROJET.firebaseapp.com",
-    databaseURL: "https://VOTRE_PROJET-default-rtdb.firebaseio.com",
-    projectId: "VOTRE_PROJET",
-    storageBucket: "VOTRE_PROJET.appspot.com",
-    messagingSenderId: "VOTRE_SENDER_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyBjuJ_SjcgLMc1B6rZxYD6ih-1IFdVMKY",
+    authDomain: "zua-palais-10gdaq.firebaseapp.com",
+    databaseURL: "https://zua-palais-10gdaq-default-rtdb.europe-west1.firebaseapp.com",
+    projectId: "zua-palais-10gdaq",
+    storageBucket: "zua-palais-10gdaq.appspot.com",
+    messagingSenderId: "161401314619",
+    appId: "1:161401314619:web:d06a015d820d0d2ba56b1e"
   },
-  // Mode : 'firebase' ou 'simulation'
-  dataMode: 'firebase'   // <-- Passez à 'simulation' pour tester sans Firebase
+  // ⚠️ Passez en mode Firebase maintenant
+  dataMode: 'firebase'
 };
