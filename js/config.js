@@ -8,6 +8,5 @@ const CONFIG = {
     messagingSenderId: "161401314619",
     appId: "1:161401314619:web:d06a015d820d0d2ba56b1e"
   },
-  // Mode : 'firestore' ou 'simulation'
-  dataMode: 'firestore'
+  dataMode: 'firestore'  // 'firestore' ou 'simulation'
 };
