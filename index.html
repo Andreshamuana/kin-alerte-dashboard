@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KinAlerte · Dashboard</title>
+  
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- ECharts -->
@@ -35,7 +36,7 @@
           <span class="counter-trend up" id="trend-sos">↑ 12%</span>
         </span>
       </button>
-      <!-- Signalements (on utilisera une autre collection ou on garde en simulation) -->
+      <!-- Signalements -->
       <button class="counter-btn" data-filter="signalement">
         <span class="badge-dot signalement"></span>
         <span class="counter-icon signalement">⚠️</span>
@@ -45,7 +46,7 @@
           <span class="counter-trend up" id="trend-signalement">↑ 8%</span>
         </span>
       </button>
-      <!-- Navigations (courses en cours) -->
+      <!-- Navigations (courses) -->
       <button class="counter-btn" data-filter="navigation">
         <span class="badge-dot navigation"></span>
         <span class="counter-icon navigation">🧭</span>
@@ -155,13 +156,107 @@
 
       <div class="settings-panel" id="settings-panel">
         <!-- Contenu paramètres (identique à version précédente) -->
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-user"></i> Profil utilisateur</div>
+          <div class="settings-item">
+            <span class="settings-item-label">Nom d'utilisateur</span>
+            <div class="settings-item-control">
+              <input type="text" value="Opérateur Central" id="settings-username" style="width:140px;" />
+              <button class="settings-btn" id="settings-save-username">Enregistrer</button>
+            </div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Email</span>
+            <div class="settings-item-control">
+              <input type="text" value="operateur@kin-alerte.com" id="settings-email" style="width:180px;" />
+              <button class="settings-btn" id="settings-save-email">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-bell"></i> Notifications</div>
+          <div class="settings-item">
+            <span class="settings-item-label">Alertes email</span>
+            <div class="settings-item-control"><div class="toggle-switch active" data-setting="notif-email"><div class="toggle-knob"></div></div></div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Notifications push</span>
+            <div class="settings-item-control"><div class="toggle-switch active" data-setting="notif-push"><div class="toggle-knob"></div></div></div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">SMS d'alerte</span>
+            <div class="settings-item-control"><div class="toggle-switch" data-setting="notif-sms"><div class="toggle-knob"></div></div></div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-palette"></i> Apparence</div>
+          <div class="settings-item">
+            <span class="settings-item-label">Thème</span>
+            <div class="settings-item-control">
+              <select id="settings-theme">
+                <option value="dark">Sombre (par défaut)</option>
+                <option value="light">Clair</option>
+                <option value="system">Système</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Taille des polices</span>
+            <div class="settings-item-control">
+              <select id="settings-font-size">
+                <option value="small">Petite</option>
+                <option value="medium" selected>Moyenne</option>
+                <option value="large">Grande</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-map"></i> Carte</div>
+          <div class="settings-item">
+            <span class="settings-item-label">Type de carte</span>
+            <div class="settings-item-control">
+              <select id="settings-maptype">
+                <option value="osm">OpenStreetMap</option>
+                <option value="satellite">Satellite</option>
+                <option value="dark">Sombre</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Afficher les zones à risque par défaut</span>
+            <div class="settings-item-control"><div class="toggle-switch active" data-setting="map-risk"><div class="toggle-knob"></div></div></div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-database"></i> Données & Export</div>
+          <div class="settings-item">
+            <span class="settings-item-label">Exporter les données (JSON)</span>
+            <div class="settings-item-control"><button class="settings-btn" id="settings-export-json"><i class="fas fa-file-export"></i> Exporter</button></div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Exporter les données (CSV)</span>
+            <div class="settings-item-control"><button class="settings-btn" id="settings-export-csv"><i class="fas fa-file-csv"></i> Exporter</button></div>
+          </div>
+          <div class="settings-item">
+            <span class="settings-item-label">Réinitialiser les préférences</span>
+            <div class="settings-item-control"><button class="settings-btn danger" id="settings-reset">Réinitialiser</button></div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title"><i class="fas fa-keyboard"></i> Raccourcis clavier</div>
+          <div class="settings-item"><span class="settings-item-label"><kbd>Ctrl</kbd> + <kbd>R</kbd> : Rafraîchir</span></div>
+          <div class="settings-item"><span class="settings-item-label"><kbd>Esc</kbd> : Fermer le panneau</span></div>
+          <div class="settings-item"><span class="settings-item-label"><kbd>Ctrl</kbd> + <kbd>F</kbd> : Recherche</span></div>
+          <div class="settings-item"><span class="settings-item-label"><kbd>Ctrl</kbd> + <kbd>P</kbd> : Exporter</span></div>
+        </div>
       </div>
     </aside>
 
     <!-- ===== MAP CENTER ===== -->
     <section class="map-container">
       <div id="map"></div>
-      <!-- Map toolbar (identique) -->
+      <!-- Map toolbar -->
       <div class="map-toolbar">
         <div class="map-toolbar-group">
           <button class="map-filter-btn active" data-map-filter="sos"><i class="fas fa-exclamation-triangle"></i> SOS</button>
@@ -180,13 +275,96 @@
         <input type="text" class="map-search-input" id="map-search" placeholder="Chercher..." autocomplete="off" />
         <div class="suggestions-box" id="suggestions-box"></div>
       </div>
-      <div class="map-legend">...</div>
+      <div class="map-legend">
+        <div class="legend-title"><i class="fas fa-map"></i> Légende</div>
+        <div class="legend-item"><span class="legend-color sos"></span> SOS Urgent</div>
+        <div class="legend-item"><span class="legend-color signalement"></span> Signalement</div>
+        <div class="legend-item"><span class="legend-color navigation"></span> Navigation</div>
+        <div class="legend-item"><span class="legend-color risk"></span> Zone à risque (IA)</div>
+        <div class="legend-item"><span class="legend-color traffic"></span> Embouteillage</div>
+        <div class="legend-item"><span class="legend-color ai"></span> Prédiction IA</div>
+      </div>
       <div class="map-scale">5 km</div>
     </section>
 
     <!-- ===== SIDEBAR RIGHT ===== -->
     <aside class="sidebar-right">
-      <!-- Statistiques (identique) -->
+      <!-- Stats du Jour -->
+      <div class="stats-section">
+        <div class="section-title">Stats du Jour <span class="see-all" id="stats-refresh"><i class="fas fa-sync-alt" style="font-size:8px;"></i></span></div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">SOS</div>
+            <div class="stat-value" id="stat-sos">0 <span class="stat-delta up" id="stat-sos-delta">+0</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Signalements</div>
+            <div class="stat-value" id="stat-signalement">0 <span class="stat-delta up" id="stat-signalement-delta">+0</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">En cours</div>
+            <div class="stat-value" id="stat-en-cours">0 <span class="stat-delta up" id="stat-en-cours-delta">+0</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Résolus</div>
+            <div class="stat-value" id="stat-resolus">0 <span class="stat-delta up" id="stat-resolus-delta">+0</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Tendance 7 Jours -->
+      <div class="stats-section">
+        <div class="section-title">Tendance 7 Jours</div>
+        <div class="chart-container" id="trend-chart"></div>
+      </div>
+      <!-- Incidents par type -->
+      <div class="stats-section">
+        <div class="section-title">Incidents par Type</div>
+        <div class="incidents-chart" id="incidents-chart">
+          <div class="incident-bar"><span class="incident-label">Accident</span><div class="incident-progress"><div class="incident-fill" style="width:0%;background:#EF4444;"></div></div><span class="incident-value" id="type-accident">0</span></div>
+          <div class="incident-bar"><span class="incident-label">Sécurité</span><div class="incident-progress"><div class="incident-fill" style="width:0%;background:#F97316;"></div></div><span class="incident-value" id="type-securite">0</span></div>
+          <div class="incident-bar"><span class="incident-label">Trafic</span><div class="incident-progress"><div class="incident-fill" style="width:0%;background:#3B82F6;"></div></div><span class="incident-value" id="type-trafic">0</span></div>
+          <div class="incident-bar"><span class="incident-label">Inondation</span><div class="incident-progress"><div class="incident-fill" style="width:0%;background:#10B981;"></div></div><span class="incident-value" id="type-inondation">0</span></div>
+          <div class="incident-bar"><span class="incident-label">Incendie</span><div class="incident-progress"><div class="incident-fill" style="width:0%;background:#8B5CF6;"></div></div><span class="incident-value" id="type-incendie">0</span></div>
+        </div>
+      </div>
+      <!-- Top Communes -->
+      <div class="stats-section">
+        <div class="section-title">Top Communes <span class="see-all" id="see-communes">Voir tout</span></div>
+        <div class="top-communes" id="top-communes"></div>
+      </div>
+      <!-- Chat / Messages Récents -->
+      <div class="stats-section">
+        <div class="section-title">Messages Récents <span class="see-all" id="see-messages">Voir tout</span></div>
+        <div class="recent-messages" id="recent-messages"></div>
+      </div>
+      <div class="stats-section">
+        <div class="section-title">Répondre</div>
+        <div class="chat-area">
+          <div class="chat-messages" id="chat-messages">
+            <div style="text-align:center;color:var(--text-tertiary);font-size:9px;padding:4px;">
+              <i class="fas fa-comment"></i> Sélectionnez un message pour répondre
+            </div>
+          </div>
+          <div class="chat-input-group">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Écrire un message..." />
+            <button class="chat-send-btn" id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- Taux de Résolution -->
+      <div class="stats-section">
+        <div class="section-title">Taux de Résolution</div>
+        <div class="resolution-rate">
+          <div class="resolution-circle">
+            <svg width="60" height="60" style="transform:rotate(-90deg);">
+              <circle cx="30" cy="30" r="24" fill="none" stroke="#1E2332" stroke-width="5"/>
+              <circle cx="30" cy="30" r="24" fill="none" stroke="#3B82F6" stroke-width="5" stroke-dasharray="151" stroke-dashoffset="42" stroke-linecap="round"/>
+            </svg>
+            <div class="resolution-value" id="resolution-value">72%</div>
+          </div>
+          <div class="resolution-label">Incidents Résolus</div>
+        </div>
+      </div>
     </aside>
   </main>
 
@@ -203,11 +381,17 @@
   <!-- ===== TOASTS ===== -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- ===== SCRIPTS ===== -->
+  <!-- ================================================================
+  SCRIPTS
+  ================================================================ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Firebase SDK (v9 compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+  <!-- Nos modules -->
   <script src="js/config.js"></script>
   <script src="js/firebase.js"></script>
   <script src="js/store.js"></script>
@@ -215,5 +399,6 @@
   <script src="js/ui.js"></script>
   <script src="js/events.js"></script>
   <script src="js/main.js"></script>
+
 </body>
 </html>
