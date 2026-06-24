@@ -1,10 +1,9 @@
-
 // js/firebase.js
-if (typeof firebase !== 'undefined' && CONFIG.firebase.apiKey !== "VOTRE_API_KEY") {
+if (typeof firebase !== 'undefined' && CONFIG.firebase.apiKey) {
   firebase.initializeApp(CONFIG.firebase);
-  window.firebaseDB = firebase.database();
-  console.log('🔥 Firebase initialisé');
+  window.firebaseDB = firebase.firestore();
+  console.log('🔥 Firestore initialisé');
 } else {
-  console.warn('⚠️ Firebase non configuré ou SDK manquant');
+  console.warn('⚠️ Firebase non configuré');
   window.firebaseDB = null;
 }
