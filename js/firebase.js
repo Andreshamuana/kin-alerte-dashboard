@@ -4,6 +4,6 @@ if (typeof firebase !== 'undefined' && CONFIG.firebase.apiKey) {
   window.firebaseDB = firebase.firestore();
   console.log('🔥 Firestore initialisé');
 } else {
-  console.warn('⚠️ Firebase non configuré');
+  console.warn('⚠️ Firebase non configuré ou SDK manquant');
   window.firebaseDB = null;
 }
