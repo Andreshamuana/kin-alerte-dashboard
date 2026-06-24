@@ -1,4 +1,3 @@
-
 // js/main.js
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 KinAlerte Dashboard');
